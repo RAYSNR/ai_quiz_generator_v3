@@ -28,9 +28,15 @@ app.get('/api/test', (req, res) => {
     res.json({ message: "API is working on Railway!" });
 });
 
-// ✅ Health Check Endpoint
+// ✅ Health Check Endpoint - Ensures Railway detects the app is running
 app.get('/health', (req, res) => {
-    res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
+    res.status(200).json({
+        status: 'OK',
+        message: 'Server is running smoothly!',
+        timestamp: new Date().toISOString(),
+        port: PORT,
+        env: process.env.NODE_ENV
+    });
 });
 
 // ✅ Keep-Alive Mechanism to prevent Railway from stopping the server
