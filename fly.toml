@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for ai-quiz-generator-v3 on 2025-03-15T13:30:22Z
+# fly.toml app configuration file generated for ai-quiz-generator-v3-a81t3q on 2025-03-15T13:42:09Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'ai-quiz-generator-v3'
+app = 'ai-quiz-generator-v3-a81t3q'
 primary_region = 'sin'
 
 [build]
