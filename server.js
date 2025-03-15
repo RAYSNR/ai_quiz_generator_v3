@@ -47,10 +47,10 @@ app.get('/health', async (req, res) => {
 // ✅ Keep-Alive Mechanism to prevent Railway from stopping the server
 setInterval(() => {
     console.log("✅ Keep-alive ping sent to prevent Railway auto-shutdown");
-    fetch(`http://localhost:${PORT}/health`)
+    fetch(`http://0.0.0.0:${PORT}/health`)
         .then(() => console.log("✅ Keep-alive successful"))
         .catch((err) => console.error("❌ Keep-alive failed:", err));
-}, 5 * 60 * 1000); // Every 5 minutes
+}, 4 * 60 * 1000); // Every 4 minutes
 
 // ✅ Handle SIGTERM to prevent sudden Railway shutdown
 process.on('SIGTERM', () => {
