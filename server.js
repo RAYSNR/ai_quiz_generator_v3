@@ -121,6 +121,9 @@ app.post('/api/createQuiz', async (req, res) => {
         res.status(500).json({ error: "Quiz generation failed." });
     }
 });
+setInterval(() => {
+    console.log("✅ Keep-alive ping sent to prevent Railway auto-shutdown");
+}, 5 * 60 * 1000); // Every 5 minutes
 
 // ✅ Start server on Railway-friendly settings
 app.listen(PORT, "0.0.0.0", () => {
