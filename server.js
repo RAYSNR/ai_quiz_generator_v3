@@ -13,7 +13,7 @@ const path = require('path');
 
 const app = express();
 app.enable('trust proxy');
-const PORT = process.env.PORT || 8080; // ✅ Use Railway's dynamic PORT
+const PORT = process.env.PORT || 8080;  // ✅ Use Railway's dynamic PORT
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -37,7 +37,6 @@ app.get('/health', (req, res) => {
     });
 });
 
-// Test OpenAI API
 async function testOpenAI() {
     try {
         const response = await openai.chat.completions.create({
@@ -51,6 +50,7 @@ async function testOpenAI() {
 }
 testOpenAI();
 
+// Enforce HTTPS redirect on Railway
 app.use((req, res, next) => {
     if (req.headers["x-forwarded-proto"] !== "https") {
         return res.redirect(`https://${req.headers.host}${req.url}`);
@@ -58,12 +58,12 @@ app.use((req, res, next) => {
     next();
 });
 
-// Serve quiz input page
+// ✅ Serve quiz input page
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'create_quiz.html'));
 });
 
-// Generate AI quiz questions
+// ✅ Generate AI quiz questions
 app.post('/api/generateQuiz', async (req, res) => {
     const { transcript } = req.body;
     if (!transcript) {
@@ -93,7 +93,7 @@ app.post('/api/generateQuiz', async (req, res) => {
     }
 });
 
-// Create a new quiz file
+// ✅ Create a new quiz file
 app.post('/api/createQuiz', async (req, res) => {
     let { videoUrl, videoDescription, transcript, quizFilename } = req.body;
 
@@ -119,7 +119,7 @@ app.post('/api/createQuiz', async (req, res) => {
         }
 
         const templatePath = path.join(__dirname, 'public', 'quizmaster.html');
-        const newQuizPath = path.join(__dirname, 'public', 'quiz', quizFilename); // ✅ Save quizzes inside /public/quiz/
+        const newQuizPath = path.join(__dirname, 'public', 'quiz', quizFilename);
 
         fs.readFile(templatePath, 'utf8', (err, data) => {
             if (err) return res.status(500).json({ error: "Failed to read template file" });
@@ -132,7 +132,7 @@ app.post('/api/createQuiz', async (req, res) => {
 
             fs.writeFile(newQuizPath, updatedQuiz, (err) => {
                 if (err) return res.status(500).json({ error: "Failed to create quiz file" });
-                res.json({ success: true, quizUrl: `https://aiquizgeneratorv3-production.up.railway.app/public/quiz/${quizFilename}` }); // ✅ FIXED Railway URL
+                res.json({ success: true, quizUrl: `https://aiquizgeneratorv3-production.up.railway.app/public/quiz/${quizFilename}` });
             });
         });
 
@@ -142,12 +142,12 @@ app.post('/api/createQuiz', async (req, res) => {
     }
 });
 
-// Keep-alive ping to prevent Railway auto-shutdown
+// ✅ Keep-alive ping to prevent Railway auto-shutdown
 setInterval(() => {
     console.log("✅ Keep-alive ping sent to prevent Railway auto-shutdown");
 }, 5 * 60 * 1000); // Every 5 minutes
 
-// Handle shutdown signals
+// ✅ Handle shutdown signals
 process.on('SIGTERM', () => {
     console.log('⚠️ Received SIGTERM, shutting down gracefully');
 });
@@ -156,11 +156,8 @@ process.on('SIGINT', () => {
     console.log('⚠️ Received SIGINT, shutting down gracefully');
 });
 
-// Start server on Railway-friendly settings
+// ✅ Start server on Railway-friendly settings
 app.listen(PORT, () => {
     console.log(`✅ Server is now listening on http://localhost:${PORT}`);
     console.log(`Server running on port ${PORT}`);
 });
-
-
-
