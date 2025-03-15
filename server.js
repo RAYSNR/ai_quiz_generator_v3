@@ -4,7 +4,6 @@ console.log("OPENAI_API_KEY:", process.env.OPENAI_API_KEY ? "Loaded" : "Not Foun
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const { OpenAI } = require("openai");
 const express = require('express');
-
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
@@ -39,6 +38,7 @@ async function testOpenAI() {
     }
 }
 testOpenAI();
+
 app.use((req, res, next) => {
     if (req.headers["x-forwarded-proto"] !== "https") {
         return res.redirect(`https://${req.headers.host}${req.url}`);
@@ -129,12 +129,14 @@ app.post('/api/createQuiz', async (req, res) => {
         res.status(500).json({ error: "Quiz generation failed." });
     }
 });
+
 setInterval(() => {
     console.log("✅ Keep-alive ping sent to prevent Railway auto-shutdown");
 }, 5 * 60 * 1000); // Every 5 minutes
 
 // Start server on Railway-friendly settings
-app.listen(8080, "0.0.0.0", () => {
-    console.log("Server running on port 8080");
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on port ${PORT}`);
 });
+
 
