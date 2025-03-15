@@ -29,14 +29,19 @@ app.get('/api/test', (req, res) => {
 });
 
 // ✅ Health Check Endpoint - Ensures Railway detects the app is running
-app.get('/health', (req, res) => {
-    res.status(200).json({
-        status: 'OK',
-        message: 'Server is running smoothly!',
-        timestamp: new Date().toISOString(),
-        port: PORT,
-        env: process.env.NODE_ENV
-    });
+app.get('/health', async (req, res) => {
+    try {
+        res.status(200).json({
+            status: 'OK',
+            message: 'Server is running smoothly!',
+            timestamp: new Date().toISOString(),
+            port: PORT,
+            env: process.env.NODE_ENV
+        });
+    } catch (error) {
+        console.error("Health check failed:", error);
+        res.status(500).json({ status: "error", message: "Health check failed" });
+    }
 });
 
 // ✅ Keep-Alive Mechanism to prevent Railway from stopping the server
