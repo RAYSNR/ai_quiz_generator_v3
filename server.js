@@ -27,6 +27,16 @@ app.get('/api/test', (req, res) => {
 });
 
 // Test OpenAI API
+// ✅ Health Check Endpoint
+app.get('/health', (req, res) => {
+    res.status(200).json({
+        status: 'OK',
+        timestamp: new Date().toISOString(),
+        port: PORT,
+        env: process.env.NODE_ENV
+    });
+});
+
 async function testOpenAI() {
     try {
         const response = await openai.chat.completions.create({
