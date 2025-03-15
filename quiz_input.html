@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        textarea, input {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Create a New Quiz</h2>
+        <input type="text" id="videoName" placeholder="Enter Video Name"> <!-- Added Video Name Field -->
+        <input type="text" id="videoUrl" placeholder="Enter Video URL">
+        <textarea id="transcript" placeholder="Paste Transcript with Timecodes"></textarea>
+        <input type="text" id="quizFilename" placeholder="Enter Quiz Filename (e.g., quiz1.html)">
+        <button onclick="submitQuizData()">Create Quiz</button>
+    </div>
+
+    <script>
+        async function submitQuizData() {
+            const videoName = document.getElementById("videoName").value.trim(); // Added Video Name Capture
+            const videoUrl = document.getElementById("videoUrl").value.trim();
+            const transcript = document.getElementById("transcript").value.trim();
+            const quizFilename = document.getElementById("quizFilename").value.trim();
+
+            if (!videoName || !videoUrl || !transcript || !quizFilename) { // Updated Validation
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            try {
+                let response = await fetch('/api/createQuiz', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ videoName, videoUrl, transcript, quizFilename }) // Added Video Name to Payload
+                });
+
+                let data = await response.json();
+                if (data.success) {
+                    window.location.href = `/${quizFilename}`;
+                } else {
+                    alert("Error creating quiz: " + data.error);
+                }
+            } catch (error) {
+                console.error("Error creating quiz:", error);
+                alert("Failed to create quiz. Please try again.");
+            }
+        }
+    </script>
+</body>
+</html>
+
