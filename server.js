@@ -1,5 +1,6 @@
 // server.js - Fixed AI JSON Response Issue
 require('dotenv').config();
+console.log("OPENAI_API_KEY:", process.env.OPENAI_API_KEY ? "Loaded" : "Not Found");
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const { OpenAI } = require("openai");
 const express = require('express');
