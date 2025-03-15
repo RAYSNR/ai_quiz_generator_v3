@@ -144,6 +144,13 @@ app.post('/api/createQuiz', async (req, res) => {
 setInterval(() => {
     console.log("✅ Keep-alive ping sent to prevent Railway auto-shutdown");
 }, 5 * 60 * 1000); // Every 5 minutes
+process.on('SIGTERM', () => {
+    console.log('⚠️ Received SIGTERM, shutting down gracefully');
+});
+
+process.on('SIGINT', () => {
+    console.log('⚠️ Received SIGINT, shutting down gracefully');
+});
 
 // Start server on Railway-friendly settings
 app.listen(PORT, () => {
