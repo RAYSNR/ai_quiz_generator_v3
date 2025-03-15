@@ -1,4 +1,4 @@
-// server.js - Fixed AI JSON Response Issue
+// server.js - Fixed AI JSON Response Issue for Railway Deployment
 require('dotenv').config();
 console.log("OPENAI_API_KEY:", process.env.OPENAI_API_KEY ? "Loaded" : "Not Found");
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -10,7 +10,7 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;  // ✅ Use Railway's dynamic PORT
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -18,6 +18,11 @@ app.use(express.static('public'));
 
 // OpenAI setup
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+// ✅ Test API Endpoint for Deployment Verification
+app.get('/api/test', (req, res) => {
+    res.json({ message: "API is working on Railway!" });
+});
 
 // Test OpenAI API
 async function testOpenAI() {
@@ -107,7 +112,7 @@ app.post('/api/createQuiz', async (req, res) => {
 
             fs.writeFile(newQuizPath, updatedQuiz, (err) => {
                 if (err) return res.status(500).json({ error: "Failed to create quiz file" });
-                res.json({ success: true, quizUrl: `https://srv748242.hstgr.cloud/public/quiz/${quizFilename}` });  // ✅ Fix URL
+                res.json({ success: true, quizUrl: `https://aiquizgeneratorv3-production.up.railway.app/public/quiz/${quizFilename}` });  // ✅ FIXED Railway URL
             });
         });
 
@@ -117,7 +122,7 @@ app.post('/api/createQuiz', async (req, res) => {
     }
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`Server running on http://192.168.1.6:${PORT}`);
+// ✅ Start server on Railway-friendly settings
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`✅ Server running on port ${PORT}`);
 });
