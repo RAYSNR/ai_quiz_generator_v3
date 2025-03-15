@@ -71,6 +71,6 @@ process.on('SIGINT', () => {
 
 // ✅ Start server with explicit 0.0.0.0 binding for Railway
 const server = app.listen(PORT, "0.0.0.0", () => {
-    console.log(`✅ Server is now listening on http://localhost:${PORT}`);
-    console.log(`Server running on port ${PORT}`);
+    console.log(`✅ Server is now listening on port ${PORT}`);
 });
+
