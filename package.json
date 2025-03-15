@@ -8,6 +8,8 @@
   "dependencies": {
     "express": "^4.21.2",
     "dotenv": "^16.4.7",
-    "openai": "^4.86.1"
+    "openai": "^4.86.1",
+    "cors": "^2.8.5"
   }
 }
+
