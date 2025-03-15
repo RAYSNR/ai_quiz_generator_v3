@@ -1,4 +1,4 @@
-// server.js - Fixed AI JSON Response Issue for Railway Deployment
+// server.js - Prevent Railway Auto-Shutdown & Fix SIGTERM issue
 require('dotenv').config();
 console.log("DEBUG: OPENAI_API_KEY =", process.env.OPENAI_API_KEY ? "Loaded" : "Not Found");
 console.log("OPENAI_API_KEY:", process.env.OPENAI_API_KEY ? "Loaded" : "Not Found");
@@ -10,6 +10,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
+const fetch = require('node-fetch');
 
 const app = express();
 app.enable('trust proxy');
@@ -145,15 +146,21 @@ app.post('/api/createQuiz', async (req, res) => {
 // ✅ Keep-alive ping to prevent Railway auto-shutdown
 setInterval(() => {
     console.log("✅ Keep-alive ping sent to prevent Railway auto-shutdown");
-}, 5 * 60 * 1000); // Every 5 minutes
+    fetch(`https://aiquizgeneratorv3-production.up.railway.app/health`)
+        .then(res => res.json())
+        .then(data => console.log("Keep-alive response:", data))
+        .catch(err => console.error("Keep-alive error:", err));
+}, 1 * 60 * 1000); // Every 1 minute
 
 // ✅ Handle shutdown signals
 process.on('SIGTERM', () => {
     console.log('⚠️ Received SIGTERM, shutting down gracefully');
+    process.exit(0);
 });
 
 process.on('SIGINT', () => {
     console.log('⚠️ Received SIGINT, shutting down gracefully');
+    process.exit(0);
 });
 
 // ✅ Start server on Railway-friendly settings
