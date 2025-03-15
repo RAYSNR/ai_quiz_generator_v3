@@ -146,11 +146,11 @@ app.post('/api/createQuiz', async (req, res) => {
 // ✅ Keep-alive ping to prevent Railway auto-shutdown
 setInterval(() => {
     console.log("✅ Keep-alive ping sent to prevent Railway auto-shutdown");
-    fetch(`https://aiquizgeneratorv3-production.up.railway.app/health`)
+    fetch(`https://aiquizgeneratorv3-production.up.railway.app/api/test`)
         .then(res => res.json())
         .then(data => console.log("Keep-alive response:", data))
         .catch(err => console.error("Keep-alive error:", err));
-}, 1 * 60 * 1000); // Every 1 minute
+}, 30 * 1000); // ✅ Every 30 seconds
 
 // ✅ Handle shutdown signals
 process.on('SIGTERM', () => {
