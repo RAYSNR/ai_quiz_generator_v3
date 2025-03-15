@@ -2,6 +2,7 @@
 require('dotenv').config();
 console.log("DEBUG: OPENAI_API_KEY =", process.env.OPENAI_API_KEY ? "Loaded" : "Not Found");
 console.log("OPENAI_API_KEY:", process.env.OPENAI_API_KEY ? "Loaded" : "Not Found");
+
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const { OpenAI } = require("openai");
 const express = require('express');
@@ -12,7 +13,7 @@ const path = require('path');
 
 const app = express();
 app.enable('trust proxy');
-const PORT = process.env.PORT || 8080;  // ✅ Use Railway's dynamic PORT
+const PORT = process.env.PORT || 8080; // ✅ Use Railway's dynamic PORT
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -26,7 +27,6 @@ app.get('/api/test', (req, res) => {
     res.json({ message: "API is working on Railway!" });
 });
 
-// Test OpenAI API
 // ✅ Health Check Endpoint
 app.get('/health', (req, res) => {
     res.status(200).json({
@@ -37,6 +37,7 @@ app.get('/health', (req, res) => {
     });
 });
 
+// Test OpenAI API
 async function testOpenAI() {
     try {
         const response = await openai.chat.completions.create({
@@ -118,7 +119,7 @@ app.post('/api/createQuiz', async (req, res) => {
         }
 
         const templatePath = path.join(__dirname, 'public', 'quizmaster.html');
-        const newQuizPath = path.join(__dirname, 'public', 'quiz', quizFilename);  // ✅ Save quizzes inside /public/quiz/
+        const newQuizPath = path.join(__dirname, 'public', 'quiz', quizFilename); // ✅ Save quizzes inside /public/quiz/
 
         fs.readFile(templatePath, 'utf8', (err, data) => {
             if (err) return res.status(500).json({ error: "Failed to read template file" });
@@ -131,7 +132,7 @@ app.post('/api/createQuiz', async (req, res) => {
 
             fs.writeFile(newQuizPath, updatedQuiz, (err) => {
                 if (err) return res.status(500).json({ error: "Failed to create quiz file" });
-                res.json({ success: true, quizUrl: `https://aiquizgeneratorv3-production.up.railway.app/public/quiz/${quizFilename}` });  // ✅ FIXED Railway URL
+                res.json({ success: true, quizUrl: `https://aiquizgeneratorv3-production.up.railway.app/public/quiz/${quizFilename}` }); // ✅ FIXED Railway URL
             });
         });
 
@@ -141,9 +142,12 @@ app.post('/api/createQuiz', async (req, res) => {
     }
 });
 
+// Keep-alive ping to prevent Railway auto-shutdown
 setInterval(() => {
     console.log("✅ Keep-alive ping sent to prevent Railway auto-shutdown");
 }, 5 * 60 * 1000); // Every 5 minutes
+
+// Handle shutdown signals
 process.on('SIGTERM', () => {
     console.log('⚠️ Received SIGTERM, shutting down gracefully');
 });
@@ -155,8 +159,8 @@ process.on('SIGINT', () => {
 // Start server on Railway-friendly settings
 app.listen(PORT, () => {
     console.log(`✅ Server is now listening on http://localhost:${PORT}`);
-});
     console.log(`Server running on port ${PORT}`);
 });
+
 
 
