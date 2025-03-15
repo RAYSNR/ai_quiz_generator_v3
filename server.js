@@ -146,7 +146,9 @@ setInterval(() => {
 }, 5 * 60 * 1000); // Every 5 minutes
 
 // Start server on Railway-friendly settings
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, () => {
+    console.log(`✅ Server is now listening on http://localhost:${PORT}`);
+});
     console.log(`Server running on port ${PORT}`);
 });
 
