@@ -4,6 +4,7 @@ console.log("OPENAI_API_KEY:", process.env.OPENAI_API_KEY ? "Loaded" : "Not Foun
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const { OpenAI } = require("openai");
 const express = require('express');
+app.enable('trust proxy');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
