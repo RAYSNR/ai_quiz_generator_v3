@@ -4,7 +4,6 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "preinstall": "rm -rf node_modules package-lock.json && npm install"
   },
   "dependencies": {
     "express": "^4.21.2",
