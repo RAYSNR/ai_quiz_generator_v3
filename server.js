@@ -10,7 +10,7 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;  // ✅ Use Railway's dynamic PORT
+const PORT = process.env.PORT || 8080;  // ✅ Use Railway's dynamic PORT
 
 app.use(cors());
 app.use(bodyParser.json());
