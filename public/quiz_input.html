@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Hub Quiz</title>
+</head>
+<body>
+    <h1>Welcome to AI Quiz Generator</h1>
+    <p>Enter a YouTube video URL to generate a quiz:</p>
+    <input type="text" id="videoUrl" placeholder="Enter YouTube URL">
+    <button onclick="submitQuiz()">Generate Quiz</button>
+
+    <script>
+        function submitQuiz() {
+            const videoUrl = document.getElementById("videoUrl").value;
+            fetch("/api/createQuiz", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ videoUrl })
+            })
+            .then(response => response.json())
+            .then(data => alert("Quiz created: " + data.quizUrl))
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
