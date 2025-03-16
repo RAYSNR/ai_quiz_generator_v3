@@ -1,16 +1,18 @@
-# fly.toml app configuration file for ai-quiz-generator-v3
+# fly.toml app configuration file generated for ai-quiz-generator-v3 on 2025-03-16T10:50:10+08:00
 #
-# See https://fly.io/docs/reference/configuration/ for details.
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = 'ai-quiz-generator-v3'
-
 primary_region = 'sin'
+
+[build]
+  dockerfile = 'Dockerfile'
 
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = 'stop'
+auto_stop_machines = "false"
   auto_start_machines = true
   min_machines_running = 0
   processes = ['app']
@@ -19,5 +21,3 @@ primary_region = 'sin'
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
-[build]
-  dockerfile = "Dockerfile"
