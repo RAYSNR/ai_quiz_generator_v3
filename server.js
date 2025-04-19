@@ -49,7 +49,7 @@ app.use((req, res, next) => {
 
 // ✅ Serve correct file now
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'quiz_input.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.post('/api/generateQuiz', async (req, res) => {
